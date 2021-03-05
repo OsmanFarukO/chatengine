@@ -1,6 +1,7 @@
 FROM golang:1.12.12 AS builder
 
 ENV CGO_ENABLED 0
+ENV GO111MODULE on
 ENV TARGET_DIR $GOPATH/src/github.com/nebula-chat/chatengine
 
 RUN echo $GOPATH
@@ -9,7 +10,7 @@ RUN cd $TARGET_DIR
 COPY . $TARGET_DIR/
 
 # build biz_server
-RUN cd ${TARGET_DIR}/messenger/biz_server && go build -ldflags='-s -w'
+RUN cd ${TARGET_DIR}/messenger/biz_server && go get && go build -ldflags='-s -w'
 # build document
 RUN cd ${TARGET_DIR}/service/document && go build -ldflags='-s -w'
 # build auth_session
